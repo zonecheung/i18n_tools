@@ -4,17 +4,18 @@ module I18nTools
     CODE_REGEXPS = [/I18n\.t\(\"(.*?)\".*?\)/, /I18n\.t\(\'(.*?)\'.*?\)/]
     
     cattr_accessor :file_types
-    self.file_types = ['controllers', 'helpers', 'models']
+    self.file_types = ['controllers', 'helpers', 'models', 'mailers']
 
   protected
     def scan(&block)
       scan_views(&block)
       scan_code(&block)
     end
-    
+
   private
     def scan_views(&block)
-      Dir['app/views/**/*.erb', 'app/views/**/*.rhtml'].each do |filename|
+      Dir['app/views/**/*.erb', 'app/views/**/*.rhtml', 'app/views/**/*.haml',
+          'app/views/**/*.rabl'].each do |filename|
         next if ignores.any? { |r| filename =~ r }
 
         content = File.read(filename)
